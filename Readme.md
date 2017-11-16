@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Jamila Shakurova](https://up.htmlacademy.ru/javascript/11/user/378505).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 
