@@ -34,6 +34,9 @@ var LOCATION = {
    }
 };
 
+var PIN_WIDTH = 40;
+var PIN_HEIGTH = 40;
+
   var getRandomValue = function(minNum, maxNum) {
     return Math.floor(Math.random() * (maxNum - minNum + 1)) - minNum;
   };
@@ -43,6 +46,7 @@ var LOCATION = {
   };
 
   var features = shuffle(FEATURES).slice(0, getRandomValue(1, FEATURES.length));
+  var titles = shuffle(TITLES);
 
     function shuffle(arr) {
       for (var i = arr.length - 1; i > 0; i--) {
@@ -56,22 +60,22 @@ var LOCATION = {
     };
 
   var createAd = function (amount) {
-    var AdList = [];
-    for (var i = 0; i < amount; i++) {
+    var adList = createAd(8);
+    for (var i = 0; i < amount; i++)
       var avatarAd = {
       'author': {
           'avatar': 'img/avatars/user0' + (i+1) + '.png',
         },
 
         "offer": {
-          'title': TITLES[i],
-          'address': LOCATION.x + ',' + LOCATION.y,
+          'title': titles[i],
+          'address': location.x + ',' + location.y,
           'price': getRandomValue(PRICES),
           'type': getRandomValue(TYPES),
           'rooms': getRandomValue(ROOMS),
           'guests': getRandomValue(QUESTS),
-          'checkin': CHECKIN,
-          'checkout': CHECKOUT,
+          'checkin': getRandomValue(CHECKIN),
+          'checkout': getRandomValue(CHECKOUT),
           'features': features,
           'description': '',
           'photos': [],
@@ -81,8 +85,38 @@ var LOCATION = {
           'x': getRandomValue(LOCATION.x.min, LOCATION.x.max),
           'y': getRandomValue(LOCATION.y.min, LOCATION.y.max),
         }
+
       }
-      AdList.push(avatarAd);
+      adList.push(avatarAd);
+      return adList;
+    };
+
+
+
+  var createPin = function (obj) {
+    var img = document.createElement('img');
+    var pin = document.createELement('button');
+    pin.classList.add('map__pin');
+    pin.style.left = obj.location.x - PIN_WIDTH / 2 + 'px';
+    pin.style.top = obj.location.y - PIN_HEIGTH / 2 + 'px';
+    img.src = obj.author.avatar;
+    img.width = PIN_WIDTH;
+    img.height = PIN_HEIGTH ;
+    pin.appendChild('img');
+
+    return pin;
+
+  };
+
+  var createPins = function (pin) {
+    var mapPins = document.querySelector('.map__pins');
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0;i < pin.length;i++) {
+
+      fragment.appendChild(createPin(adList[i]));
     }
-    return AdList;
-  }
+      mapPins.appendChild(fragment);
+  };
+
+
