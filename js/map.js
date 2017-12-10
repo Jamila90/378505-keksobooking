@@ -9,11 +9,12 @@ var TITLES = ['Большая уютная квартира',
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'];
 
-var TYPES = ['flat', 'house', 'bungalo'];
+var TYPES = ['flat', 'house', 'bungalo', 'palace'];
 var TYPES_LOCAL = {
   'flat': 'Квартира',
   'bungalo': 'Бунгало',
-  'house': 'Дом'
+  'house': 'Дом',
+  'palace': 'Дворец'
 };
 
 var PRICES = [1000, 1000000];
@@ -156,6 +157,7 @@ var dialogAdvert = function (obj) {
 
 var adList = createAd(8);
 
+// <---------------------------------- События --------------------------------------->
 
 var map = document.querySelector('.map');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
@@ -176,7 +178,7 @@ var identifyIndex = function (src) {
   return index;
 };
 
-var arrPins = function () {
+var getArrPins = function () {
   var mapPins = map.querySelectorAll('.map__pin');
   for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].addEventListener('click', onClickPin);
@@ -197,7 +199,7 @@ var onMouseupButton = function () {
   }
 
   createPins(adList);
-  arrPins();
+  getArrPins();
 };
 
 var onPopupEnterPress = function (evt) {
@@ -245,7 +247,7 @@ var onClickPin = function (evt) {
       popup.classList.remove('hidden');
     }
     evt.currentTarget.classList.add('map__pin--active');
-    arrPins();
+    getArrPins();
     popupClose = document.querySelector('.popup__close');
     popupClose.addEventListener('click', onPopupClose);
     document.addEventListener('keydown', onPopupEscPress);
@@ -257,3 +259,59 @@ var onClickPin = function (evt) {
 mapPinMain.addEventListener('mouseup', onMouseupButton);
 mapPin.addEventListener('click', onClickPin);
 
+// <--------------------------- Валидация формы ----------------------------------->
+
+var timeIn = form.querySelector('#timein');
+var timeOut = form.querySelector('#timeout');
+var roomNumber = form.querySelector('#room_number');
+var capacity = form.querySelector('#capacity');
+var typeSelect = form.querySelector('#type');
+var price = form.querySelector('#price');
+
+var timeChange = function (evt) {
+  var toChange = evt.target.id === 'timein' ? timeOut : timeIn;
+  var timeInValue = parseInt(timeIn.value, 10);
+  var timeOutValue = parseInt(timeOut.value, 10);
+  if (timeInValue > timeOutValue) {
+    toChange.value = evt.target.value;
+  }
+};
+
+var roomNumberCapacity = function (evt) {
+  target = evt.target.value;
+  switch (target) {
+    case '1':
+      capacity.value = '1';
+      break;
+    case '2':
+      capacity.value = '2';
+      break;
+    case '3':
+      capacity.value = '3';
+      break;
+    case '100':
+      capacity.value = '0';
+  }
+};
+
+var priceChange = function (evt) {
+  target = evt.currentTarget.value;
+  switch (target) {
+    case 'bungalo':
+      price.value = 0;
+      break;
+    case 'flat':
+      price.value = 1000;
+      break;
+    case 'house':
+      price.value = 5000;
+      break;
+    case 'palace':
+      price.value = 10000;
+  }
+};
+
+timeIn.addEventListener('change', timeChange);
+timeOut.addEventListener('change', timeChange);
+roomNumber.addEventListener('change', roomNumberCapacity);
+typeSelect.addEventListener('change', priceChange);
