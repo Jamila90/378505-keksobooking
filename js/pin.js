@@ -79,7 +79,9 @@ window.pin = (function () {
     identifyIndex: identifyIndex,
     onPopupEnterPress: onPopupEnterPress,
     onPopupEscPress: onPopupEscPress,
-    onPopupClose: onPopupClose
+    onPopupClose: onPopupClose,
+    PIN_HEIGTH: PIN_HEIGTH,
+    PIN_WIDTH: PIN_WIDTH
   };
 
 })();

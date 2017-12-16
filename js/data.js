@@ -58,7 +58,6 @@ window.data = (function () {
     return arr;
   };
 
-  var features = shuffle(FEATURES).slice(0, getRandomValue(1, FEATURES.length));
   var titles = shuffle(TITLES);
 
   var createAd = function (amount) {
@@ -66,11 +65,11 @@ window.data = (function () {
     for (var i = 0; i < amount; i++) {
       var locX = getRandomValue(LOCATION.x.min, LOCATION.x.max);
       var locY = getRandomValue(LOCATION.y.min, LOCATION.y.max);
+      var features = shuffle(FEATURES).slice(0, getRandomValue(1, FEATURES.length));
       var avatarAd = {
         'author': {
           'avatar': 'img/avatars/user0' + (i + 1) + '.png',
         },
-
         'offer': {
           'title': titles[i],
           'address': locX + ',' + locY,
@@ -97,6 +96,7 @@ window.data = (function () {
   };
 
   return {
+    LOCATION: LOCATION,
     TYPES_LOCAL: TYPES_LOCAL,
     adList: createAd(8)
   };
