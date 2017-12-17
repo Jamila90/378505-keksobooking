@@ -20,22 +20,11 @@
     }
   };
 
-  var roomNumberCapacity = function (evt) {
-    target = evt.target.value;
-    switch (target) {
-      case '1':
-        capacity.value = '1';
-        break;
-      case '2':
-        capacity.value = '2';
-        break;
-      case '3':
-        capacity.value = '3';
-        break;
-      case '100':
-        capacity.value = '0';
-    }
+  var syncValue = function (element, value) {
+    element.value = value;
   };
+
+  window.synchronizeFields(timeIn, timeOut, timeChange, syncValue, window.synchronizeFields.callback);
 
   var priceChange = function (evt) {
     target = evt.currentTarget.value;
@@ -53,6 +42,31 @@
         price.value = 10000;
     }
   };
+
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+  };
+
+  window.synchronizeFields(typeSelect, price, priceChange, syncValueWithMin, window.synchronizeFields.callback);
+
+  var roomNumberCapacity = function (evt) {
+    target = evt.target.value;
+    switch (target) {
+      case '1':
+        capacity.value = '1';
+        break;
+      case '2':
+        capacity.value = '2';
+        break;
+      case '3':
+        capacity.value = '3';
+        break;
+      case '100':
+        capacity.value = '0';
+    }
+  };
+
+  window.synchronizeFields(roomNumber, capacity, roomNumberCapacity, syncValueWithMin, window.synchronizeFields.callback);
 
   timeIn.addEventListener('change', timeChange);
   timeOut.addEventListener('change', timeChange);
