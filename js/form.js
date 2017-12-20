@@ -62,4 +62,10 @@
 
   window.synchronizeFields(roomNumber, capacity, setRoomNumberCapacity);
 
+  form.addEventListener('submit', function (evt) {
+    var formData = new FormData(form);
+    window.backend.save(formData);
+    evt.preventDefault();
+  });
+
 })();
