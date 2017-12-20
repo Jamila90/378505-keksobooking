@@ -9,68 +9,57 @@
   var capacity = form.querySelector('#capacity');
   var typeSelect = form.querySelector('#type');
   var price = form.querySelector('#price');
-  var target;
 
-  var timeChange = function (evt) {
-    var toChange = evt.target.id === 'timein' ? timeOut : timeIn;
-    var timeInValue = parseInt(timeIn.value, 10);
-    var timeOutValue = parseInt(timeOut.value, 10);
-    if (timeInValue > timeOutValue) {
-      toChange.value = evt.target.value;
+  var timeChange = function (changedTime, timeToSynchrone) {
+    var isSynchroniseToLow = changedTime.id === 'timein' ? true : false;
+    if (isSynchroniseToLow) {
+      if (parseInt(changedTime.value, 10) > parseInt(timeToSynchrone.value, 10)) {
+        timeToSynchrone.value = changedTime.value;
+      }
+    } else {
+      if (parseInt(changedTime.value, 10) < parseInt(timeToSynchrone.value, 10)) {
+        timeToSynchrone.value = changedTime.value;
+      }
     }
   };
 
-  var syncValue = function (element, value) {
-    element.value = value;
-  };
+  window.synchronizeFields(timeIn, timeOut, timeChange);
+  window.synchronizeFields(timeOut, timeIn, timeChange);
 
-  window.synchronizeFields(timeIn, timeOut, timeChange, syncValue, window.synchronizeFields.callback);
-
-  var priceChange = function (evt) {
-    target = evt.currentTarget.value;
-    switch (target) {
+  var priceChange = function (type, priceVal) {
+    switch (type.value) {
       case 'bungalo':
-        price.value = 0;
+        priceVal.value = 0;
         break;
       case 'flat':
-        price.value = 1000;
+        priceVal.value = 1000;
         break;
       case 'house':
-        price.value = 5000;
+        priceVal.value = 5000;
         break;
       case 'palace':
-        price.value = 10000;
+        priceVal.value = 10000;
     }
   };
 
-  var syncValueWithMin = function (element, value) {
-    element.min = value;
-  };
+  window.synchronizeFields(typeSelect, price, priceChange);
 
-  window.synchronizeFields(typeSelect, price, priceChange, syncValueWithMin, window.synchronizeFields.callback);
-
-  var roomNumberCapacity = function (evt) {
-    target = evt.target.value;
-    switch (target) {
+  var setRoomNumberCapacity = function (rooms, guests) {
+    switch (rooms.value) {
       case '1':
-        capacity.value = '1';
+        guests.value = '1';
         break;
       case '2':
-        capacity.value = '2';
+        guests.value = '2';
         break;
       case '3':
-        capacity.value = '3';
+        guests.value = '3';
         break;
       case '100':
-        capacity.value = '0';
+        guests.value = '0';
     }
   };
 
-  window.synchronizeFields(roomNumber, capacity, roomNumberCapacity, syncValueWithMin, window.synchronizeFields.callback);
-
-  timeIn.addEventListener('change', timeChange);
-  timeOut.addEventListener('change', timeChange);
-  roomNumber.addEventListener('change', roomNumberCapacity);
-  typeSelect.addEventListener('change', priceChange);
+  window.synchronizeFields(roomNumber, capacity, setRoomNumberCapacity);
 
 })();
