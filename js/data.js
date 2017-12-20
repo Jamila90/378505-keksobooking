@@ -40,6 +40,8 @@ window.data = (function () {
     'palace': 'Дворец'
   };
 
+  var adList = [];
+
   var getRandomValue = function (minNum, maxNum) {
     return Math.floor(minNum + Math.random() * (maxNum + 1 - minNum));
   };
@@ -58,10 +60,35 @@ window.data = (function () {
     return arr;
   };
 
+  var dataLoadFromServer = function (data) {
+    adList = data;
+  };
+
+  var loadError = function (errorMessage) {
+    var popupError = document.createElement('div');
+
+    popupError.style.position = 'absolute';
+    popupError.style.zIndex = '100';
+    popupError.style.left = '0';
+    popupError.style.right = '0';
+    popupError.style.margin = '0 auto';
+    popupError.style.padding = '5px';
+    popupError.style.fontSize = '20px';
+    popupError.style.textAlign = 'center';
+    popupError.style.color = '#fff';
+    popupError.style.backgroundColor = 'red';
+
+    popupError.textContent = errorMessage;
+    document.body.style.position = 'relative';
+    document.body.insertAdjacentElement('afterbegin', popupError);
+  };
+
+  window.backend.load(dataLoadFromServer, loadError);
+
   var titles = shuffle(TITLES);
 
   var createAd = function (amount) {
-    var adList = [];
+
     for (var i = 0; i < amount; i++) {
       var locX = getRandomValue(LOCATION.x.min, LOCATION.x.max);
       var locY = getRandomValue(LOCATION.y.min, LOCATION.y.max);
